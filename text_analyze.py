@@ -1,7 +1,7 @@
 import google.generativeai as genai
 from IPython.display import Markdown
 import json
-GOOGLE_API_KEY = "AIzaSyB_83VMQrIQnHNEcY6iDE2SUcSnsGMd1Bw"
+GOOGLE_API_KEY = "Input your api key"
 
 class MedicalDataAnalyzer:
     def __init__(self, api_key):
