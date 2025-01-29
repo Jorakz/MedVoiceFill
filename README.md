@@ -22,8 +22,8 @@ A web-based application for automating medical data entry and management through
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/medical-data-automation.git
-cd medical-data-automation
+git clone https://github.com/Jorakz/MedVoiceFille.git
+cd MedVoiceFille
 ```
 
 2. Install required dependencies:
