@@ -5,57 +5,43 @@ from datetime import datetime
 import shutil
 import json
 
-
-GOOGLE_API_KEY = "AIzaSyB_83VMQrIQnHNEcY6iDE2SUcSnsGMd1Bw"
-# Указываем директорию, куда нужно сохранять файл
+# Директорія для збереження аудіофайлів / Directory for saving audio files
 TARGET_DIR = "saved_audio"
 os.makedirs(TARGET_DIR, exist_ok=True)
 
 def save_audio(audio_path):
-    # Проверяем, что файл существует
+    """Зберігає аудіофайл у цільовій директорії / Saves audio file to target directory"""
     if not audio_path:
         return "Файл не записан!"
-
-    # Генерируем уникальное имя файла
-    new_filename = f"audio.ogg"
+    new_filename = "audio.ogg"
     target_path = os.path.join(TARGET_DIR, new_filename)
-
-    # Копируем файл в целевую директорию
     shutil.copy2(audio_path, target_path)
     return target_path
 
-def audio_processing_func(audio_input,text_old):
+def audio_processing_func(audio_input, text_old):
+    """Обробляє аудіофайл та додає розпізнаний текст / Processes audio file and appends recognized text"""
     try:
         path_audio = save_audio(audio_input)
         text = aud.audio_analize(path_audio)
-
-
         text_old = text_old + ' ' + text
-
-
         return text_old
     except Exception as e:
         return f"Помилка обробки аудіо: {str(e)}"
 
-
 def clear_func():
-
-    # Return empty values for Audio and TextArea
+    """Очищує всі поля в застосунку / Clears all fields in the application"""
     audio_empty = None
     text_empty = ""
-
-    # Return empty strings for all textboxes (21 fields)
-    textbox_empty = [""] * 22
-
-    # Combine all empty values in the correct order
+    textbox_empty = [""] * 22  # 22 текстових поля
     return [audio_empty, text_empty] + textbox_empty
 
-
 def text_processing_func(text):
+    """Аналізує текст і витягує медичні дані / Analyzes text and extracts medical data"""
     try:
         analyzer = MedicalDataAnalyzer(GOOGLE_API_KEY)
         result = analyzer.analyze_text(text)
-
+        
+        # Мапа полів / Field labels mapping
         field_labels = {
             "name": "Ім'я",
             "surname": "Прізвище",
@@ -80,56 +66,32 @@ def text_processing_func(text):
             "allergy_history": "Алергологічний анамнез",
             "drug_intolerance": "Непереносимість лікарських препаратів"
         }
-        output_values = []
-        for key in result:
-            output_values.append(result[key])
+        
+        output_values = [result.get(key, '') for key in field_labels]
         print(output_values)
         return output_values
     except Exception as e:
         return [''] * 22 + [f"Помилка обробки тексту: {str(e)}"]
 
-
 def download_func(patient_data):
-    """
-    Save patient data as JSON file with timestamp in filename
-    """
+    """Зберігає дані пацієнта у JSON-файл / Saves patient data to a JSON file"""
     try:
-        # Create directory if it doesn't exist
         save_dir = "patient_data_json"
         os.makedirs(save_dir, exist_ok=True)
-
-        # Generate timestamp for unique filename
+        
+        # Генеруємо унікальну назву файлу / Generate unique filename
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-
-        # Create filename with patient name and timestamp
         patient_name = f"{patient_data.get('surname', '')}_{patient_data.get('name', '')}"
         filename = f"patient_{patient_name}_{timestamp}.json"
-
-        # Clean filename of any invalid characters
         filename = "".join(c for c in filename if c.isalnum() or c in ('_', '-', '.'))
-
-        # Full path for saving
         filepath = os.path.join(save_dir, filename)
-
-        # Save data as JSON
+        
+        # Записуємо JSON-файл / Save JSON file
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(patient_data, f, ensure_ascii=False, indent=4)
-
-        print(f"Patient data saved to: {filepath}")
+        
+        print(f"Дані пацієнта збережено у: {filepath}")
         return 0
-
     except Exception as e:
-        print(f"Error saving patient data: {str(e)}")
+        print(f"Помилка збереження даних пацієнта: {str(e)}")
         return 1
-
-def clear_func():
-    """Clear all fields in the application"""
-    # Return empty values for Audio and TextArea
-    audio_empty = None
-    text_empty = ""
-
-    # Return empty strings for all textboxes (21 fields)
-    textbox_empty = [""] * 22
-
-    # Combine all empty values in the correct order
-    return [audio_empty, text_empty] + textbox_empty
