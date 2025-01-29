@@ -122,8 +122,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Google for the Gemini API
 - Gradio team for the web interface framework
 - Contributors and testers
-
-## Contact
-
-Your Name - youremail@example.com
-Project Link: https://github.com/yourusername/medical-data-automation
+ 
