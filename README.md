@@ -60,11 +60,11 @@ http://localhost:7860
 
 ```
 ├── patient_data_docx\
-    ├── Іван_Іванов_Іванович.docx            # Save data in docx format with add template
+|   └── Іван_Іванов_Іванович.docx            # Save data in docx format with add template
 ├── patient_data_json\
-    ├── patient_Iванов_Іван_2025012952.json  # Save data in json format
+|   └── patient_Iванов_Іван_2025012952.json  # Save data in json format
 ├── saved_audio\
-    ├── audio.ogg            # Audio to receive text
+|   └── audio.ogg            # Audio to receive text
 ├── app.py                  # Main application file
 ├── app_function.py         # Core application functions
 ├── audio_to_text.py        # Audio processing module
